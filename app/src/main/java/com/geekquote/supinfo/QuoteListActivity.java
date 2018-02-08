@@ -1,10 +1,10 @@
 package com.geekquote.supinfo;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.geekquote.supinfo.model.Quote;
 
@@ -13,7 +13,6 @@ import java.util.List;
 
 public class QuoteListActivity extends AppCompatActivity {
     private List<Quote> quoteList = new ArrayList<>();
-    private final static int duration = Toast.LENGTH_LONG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +20,11 @@ public class QuoteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quote_list);
         Resources resources = getResources();
 
-        Context context = getApplicationContext();
-
         String[] quotesFromRessources = resources.getStringArray(R.array.quote_array);
 
         for (String quotesFromRessource : quotesFromRessources) {
             addQuote(quotesFromRessource);
         }
-
-        //Toast toast = Toast.makeText(context, "List now contains " + quoteList.size() + " quotes !", duration);
-        //toast.show();
     }
 
     private void addQuote(String strQuote) {
@@ -38,7 +32,23 @@ public class QuoteListActivity extends AppCompatActivity {
         quote.setStrQuote(strQuote);
 
         quoteList.add(quote);
+        createTextView(quote);
+    }
 
-        //Log.d("Add_Quote", "New quote with str : " + quote.getStrQuote());
+    private void createTextView(Quote quote) {
+        // On retrouve le LinearLayout grâce à son id
+        LinearLayout layout = findViewById(R.id.linear_vertical);
+
+        // On crée un élément TextView à chaque ajout d'un Quote, qui contiendra la valeur du quote en texte
+        TextView textView = new TextView(this);
+        textView.setText(quote.getStrQuote());
+
+        // On initialise la couleur à partir des ressources, suivant si la liste contient un nombre pair ou impair de valeurs
+        int color = quoteList.size() % 2 == 0 ? R.color.lightgray : R.color.gray;
+        // On set la couleur de fond de notre élément TextView créé précédemment
+        textView.setBackgroundColor(getResources().getColor(color));
+
+        // Enfin, on ajoute notre TextView créé au LinearLayout vertical (parent)
+        layout.addView(textView);
     }
 }

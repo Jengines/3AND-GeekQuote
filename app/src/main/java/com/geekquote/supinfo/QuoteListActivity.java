@@ -1,10 +1,13 @@
 package com.geekquote.supinfo;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import com.geekquote.supinfo.model.Quote;
 
@@ -13,18 +16,42 @@ import java.util.List;
 
 public class QuoteListActivity extends AppCompatActivity {
     private List<Quote> quoteList = new ArrayList<>();
+    private String LOG = QuoteListActivity.this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_list);
-        Resources resources = getResources();
 
-        String[] quotesFromRessources = resources.getStringArray(R.array.quote_array);
+        final EditText edtAddQuote = findViewById(R.id.edt_new_quote);
 
-        for (String quotesFromRessource : quotesFromRessources) {
-            addQuote(quotesFromRessource);
-        }
+        // On crée notre ArrayAdapter qui va être associé à notre List de <Quote>
+        final ArrayAdapter<Quote> quoteListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, quoteList);
+
+        // On associe notre adapteur à la ListView
+        ListView mList = findViewById(R.id.lst_v_quotes);
+        mList.setAdapter(quoteListAdapter);
+
+        Button button = findViewById(R.id.btn_add_quote);
+
+        // On configure la méthode setOnClickListener() du bouton d'ajout de quote,
+        // pour permettre le traitement
+        button.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                String quoteStr = edtAddQuote.getText().toString();
+
+                // On vérifie que le contenu de l'Edit text contient bien quelque chose
+                if (!quoteStr.isEmpty()) {
+                    // 1. On crée l'objet quote à partir du texte récupéré, et on l'ajoute à notre List de <Quote>
+                    addQuote(quoteStr);
+                    // 2. On supprime le contenu de l'Edit Text
+                    edtAddQuote.setText(null);
+                    // 3. On notifie l'adapteur qu'un changement a eu lieu pour permettre l'affichage du quote qui aura été créé
+                    quoteListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     private void addQuote(String strQuote) {
@@ -32,23 +59,5 @@ public class QuoteListActivity extends AppCompatActivity {
         quote.setStrQuote(strQuote);
 
         quoteList.add(quote);
-        createTextView(quote);
-    }
-
-    private void createTextView(Quote quote) {
-        // On retrouve le LinearLayout grâce à son id
-        LinearLayout layout = findViewById(R.id.linear_vertical);
-
-        // On crée un élément TextView à chaque ajout d'un Quote, qui contiendra la valeur du quote en texte
-        TextView textView = new TextView(this);
-        textView.setText(quote.getStrQuote());
-
-        // On initialise la couleur à partir des ressources, suivant si la liste contient un nombre pair ou impair de valeurs
-        int color = quoteList.size() % 2 == 0 ? R.color.lightgray : R.color.gray;
-        // On set la couleur de fond de notre élément TextView créé précédemment
-        textView.setBackgroundColor(getResources().getColor(color));
-
-        // Enfin, on ajoute notre TextView créé au LinearLayout vertical (parent)
-        layout.addView(textView);
     }
 }

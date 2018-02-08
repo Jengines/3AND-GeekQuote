@@ -33,4 +33,11 @@ public class Quote {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    // When we associate a List of Object<> to ArrayAdapter,
+    // the toString() method is used to display element on the screen
+    @Override
+    public String toString() {
+        return strQuote;
+    }
 }

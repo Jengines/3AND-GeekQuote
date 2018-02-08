@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/linear_vertical"
     tools:context="com.geekquote.supinfo.QuoteListActivity">
 
     <LinearLayout
@@ -14,18 +14,24 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/edt_new_quote"
             android:layout_width="198dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="New Quote" />
+            android:hint="New Quote"
+            android:inputType="textPersonName" />
 
         <Button
+            android:id="@+id/btn_add_quote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add Quote" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/lst_v_quotes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

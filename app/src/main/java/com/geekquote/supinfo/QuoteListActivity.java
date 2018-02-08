@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.geekquote.supinfo.adapter.QuoteListAdapter;
 import com.geekquote.supinfo.model.Quote;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.List;
 public class QuoteListActivity extends AppCompatActivity {
     private List<Quote> quoteList = new ArrayList<>();
     private String LOG = QuoteListActivity.this.getClass().getSimpleName();
+    QuoteListAdapter quoteListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class QuoteListActivity extends AppCompatActivity {
 
         final EditText edtAddQuote = findViewById(R.id.edt_new_quote);
 
-        // On crée notre ArrayAdapter qui va être associé à notre List de <Quote>
-        final ArrayAdapter<Quote> quoteListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, quoteList);
+        // On initialise notre QuoteListAdapter qui va être associé à notre List de <Quote>
+        quoteListAdapter = new QuoteListAdapter(QuoteListActivity.this, quoteList);
 
         // On associe notre adapteur à la ListView
         ListView mList = findViewById(R.id.lst_v_quotes);

@@ -21,7 +21,7 @@ public class QuoteListAdapter extends BaseAdapter {
     private Activity mActivity;
     private LayoutInflater mInflater;
     private List<Quote> mQuotes;
-    Quote quote = new Quote();
+    private Quote quote = new Quote();
 
     public QuoteListAdapter(Activity activity, List<Quote> quotes) {
         this.mActivity = activity;
@@ -76,4 +76,6 @@ public class QuoteListAdapter extends BaseAdapter {
     private String toString(Quote quote){
         return quote.getStrQuote();
     }
+
+
 }

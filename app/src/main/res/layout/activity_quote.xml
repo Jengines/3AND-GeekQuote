@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.geekquote.supinfo.QuoteActivity">
+
+    <TextView
+        android:id="@+id/txtQuoteStr"
+        android:layout_width="358dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="12dp" />
+
+    <TextView
+        android:id="@+id/txtQuoteDate"
+        android:layout_width="111dp"
+        android:layout_height="20dp"
+        android:layout_alignEnd="@+id/txtQuoteStr"
+        android:layout_alignRight="@+id/txtQuoteStr"
+        android:layout_below="@+id/txtQuoteStr"
+        android:layout_marginTop="82dp"
+        tools:layout_editor_absoluteX="257dp"
+        tools:layout_editor_absoluteY="112dp" />
+
+    <RatingBar
+        android:id="@+id/rtbQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnValide"
+        android:layout_alignRight="@+id/btnValide"
+        android:layout_below="@+id/txtQuoteDate"
+        android:layout_marginEnd="27dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginTop="59dp"
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="131dp"
+        android:layout_height="43dp"
+        android:layout_alignBottom="@+id/btnValide"
+        android:layout_alignLeft="@+id/txtQuoteStr"
+        android:layout_alignStart="@+id/txtQuoteStr"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:text="Annuler"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="301dp" />
+
+    <Button
+        android:id="@+id/btnValide"
+        android:layout_width="117dp"
+        android:layout_height="39dp"
+        android:layout_alignEnd="@+id/txtQuoteDate"
+        android:layout_alignRight="@+id/txtQuoteDate"
+        android:layout_below="@+id/rtbQuote"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="70dp"
+        android:text="Valider"
+        tools:layout_editor_absoluteX="225dp"
+        tools:layout_editor_absoluteY="304dp" />
+
+</RelativeLayout>

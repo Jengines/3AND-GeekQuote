@@ -1,12 +1,12 @@
 package com.geekquote.supinfo.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Quote {
+public class Quote implements Serializable{
     String strQuote;
-    int rating;
+    Double rating = 0d;
     Date creationDate;
-
 
     /* Getters && Setters */
 
@@ -18,11 +18,11 @@ public class Quote {
         this.strQuote = strQuote;
     }
 
-    public int getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

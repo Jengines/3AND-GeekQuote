@@ -1,6 +1,10 @@
 package com.geekquote.supinfo;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +57,9 @@ public class QuoteActivity extends AppCompatActivity {
         btnValide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // On déclenche une notification dès lors que l'utilisateur valide la modification
+                createNotification();
+
                 Intent intent = new Intent(QuoteActivity.this, QuoteListActivity.class);
 
                 if (quote != null) {
@@ -101,5 +108,32 @@ public class QuoteActivity extends AppCompatActivity {
                 alert.show();
             }
         });
+    }
+
+    private void createNotification() {
+        Intent notificationIntent =
+                new Intent(QuoteActivity.this, QuoteListActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(QuoteActivity.this, 0, notificationIntent, 0);
+
+        // Create Notification
+        Notification.Builder notiBuilder = new Notification.Builder(QuoteActivity.this);
+        // Default ic from drawable resource, can be whatever you want
+        notiBuilder.setSmallIcon(R.drawable.ic_launcher_background)
+                // Text when notification first occurs
+                .setTicker("Notification - Quote saved").setWhen(System.currentTimeMillis()).setAutoCancel(true)
+                // Define content Text and Title Text
+                .setContentText("Quote saved").setContentTitle("A NOTIFICATION")
+                // Define the pending intent, called when user click on notification
+                .setContentIntent(pendingIntent);
+        Notification notification = notiBuilder.build();
+
+        //Obtain a reference to the NotificationManager
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(ns);
+        // Use the NotificationManager to issue the notification
+        mNotificationManager.notify(1, notification);
+
     }
 }

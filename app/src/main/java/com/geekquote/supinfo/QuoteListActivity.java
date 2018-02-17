@@ -32,8 +32,7 @@ public class QuoteListActivity extends AppCompatActivity {
         if (extras != null) {
             Quote quote = (Quote) extras.get("Quote");
             if (quote != null) {
-                Log.d(LOG, "New rating for quote : " + quote.getStrQuote() +
-                        ", rating is : " + quote.getRating());
+                quoteList.add(quote);
             }
         }
 

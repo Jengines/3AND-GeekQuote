@@ -2,9 +2,7 @@ package com.geekquote.supinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,7 +14,6 @@ import com.geekquote.supinfo.model.Quote;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class QuoteListActivity extends AppCompatActivity {
     private ArrayList<Quote> quoteList = new ArrayList<>();
@@ -39,8 +36,19 @@ public class QuoteListActivity extends AppCompatActivity {
 
         final EditText edtAddQuote = findViewById(R.id.edt_new_quote);
 
+
+        if (savedInstanceState != null && savedInstanceState.containsKey("quotes")) {
+            ArrayList<Quote> savedQuotes = savedInstanceState.getParcelableArrayList("quotes");
+
+            if (savedQuotes != null && savedQuotes.size() != 0) {
+                quoteList = savedQuotes;
+            }
+        }
+
         // On initialise notre QuoteListAdapter qui va être associé à notre List de <Quote>
-        quoteListAdapter = new QuoteListAdapter(QuoteListActivity.this, quoteList);
+        quoteListAdapter = new
+
+                QuoteListAdapter(QuoteListActivity.this, quoteList);
 
         // On associe notre adapteur à la ListView
         ListView mList = findViewById(R.id.lst_v_quotes);
@@ -50,7 +58,9 @@ public class QuoteListActivity extends AppCompatActivity {
 
         // On configure la méthode setOnClickListener() du bouton d'ajout de quote,
         // pour permettre le traitement
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener()
+
+        {
 
             public void onClick(View view) {
                 String quoteStr = edtAddQuote.getText().toString();
@@ -67,7 +77,9 @@ public class QuoteListActivity extends AppCompatActivity {
             }
         });
 
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -83,20 +95,10 @@ public class QuoteListActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("quotes", quoteList);
+        //outState.putSerializable("quotes", quoteList);
+        outState.putParcelableArrayList("quotes", quoteList);
 
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        ArrayList<Quote> savedQuotes = (ArrayList<Quote>) savedInstanceState.getSerializable("quotes");
-
-        if (savedQuotes != null && savedQuotes.size() != 0) {
-            quoteList = savedQuotes;
-        }
-
     }
 
     private void addQuote(String strQuote) {

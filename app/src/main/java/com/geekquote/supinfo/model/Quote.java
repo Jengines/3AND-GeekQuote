@@ -1,12 +1,24 @@
 package com.geekquote.supinfo.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Quote implements Serializable{
+public class Quote implements Parcelable{
     String strQuote;
     Double rating = 0d;
     Date creationDate;
+
+    public Quote() {
+    }
+
+    private Quote(Parcel in) {
+        strQuote = in.readString();
+        rating = in.readDouble();
+        creationDate = (Date) in.readSerializable();
+    }
+
 
     /* Getters && Setters */
 
@@ -40,4 +52,25 @@ public class Quote implements Serializable{
     public String toString() {
         return strQuote;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(strQuote);
+        out.writeDouble(rating);
+        out.writeSerializable(creationDate);
+    }
+
+    public static final Parcelable.Creator<Quote> CREATOR = new Parcelable.Creator<Quote>() {
+        public Quote createFromParcel(Parcel in) {
+            return new Quote(in);
+        }
+
+        public Quote[] newArray(int size) {
+            return new Quote[size];
+        }
+    };
 }

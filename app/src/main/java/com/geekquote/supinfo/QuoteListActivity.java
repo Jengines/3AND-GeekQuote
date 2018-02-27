@@ -19,23 +19,14 @@ public class QuoteListActivity extends AppCompatActivity {
     private ArrayList<Quote> quoteList = new ArrayList<>();
     private String LOG = QuoteListActivity.this.getClass().getSimpleName();
     QuoteListAdapter quoteListAdapter;
+    int quotePosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_list);
 
-        Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            Quote quote = (Quote) extras.get("Quote");
-            if (quote != null) {
-                quoteList.add(quote);
-            }
-        }
-
         final EditText edtAddQuote = findViewById(R.id.edt_new_quote);
-
 
         if (savedInstanceState != null && savedInstanceState.containsKey("quotes")) {
             ArrayList<Quote> savedQuotes = savedInstanceState.getParcelableArrayList("quotes");
@@ -46,9 +37,7 @@ public class QuoteListActivity extends AppCompatActivity {
         }
 
         // On initialise notre QuoteListAdapter qui va être associé à notre List de <Quote>
-        quoteListAdapter = new
-
-                QuoteListAdapter(QuoteListActivity.this, quoteList);
+        quoteListAdapter = new QuoteListAdapter(QuoteListActivity.this, quoteList);
 
         // On associe notre adapteur à la ListView
         ListView mList = findViewById(R.id.lst_v_quotes);
@@ -85,19 +74,31 @@ public class QuoteListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long id) {
 
+                quotePosition = position;
                 Intent intent = new Intent(QuoteListActivity.this, QuoteActivity.class);
                 intent.putExtra("Quote", quoteList.get(position));
 
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
         });
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //outState.putSerializable("quotes", quoteList);
-        outState.putParcelableArrayList("quotes", quoteList);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            Quote quote = data.getParcelableExtra("Quote");
+            if (quote != null) {
+                quoteList.set(quotePosition, quote);
+                quoteListAdapter.notifyDataSetChanged();
+            }
+        }
 
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("quotes", quoteList);
         super.onSaveInstanceState(outState);
     }
 

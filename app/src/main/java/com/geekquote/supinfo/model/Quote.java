@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-public class Quote implements Parcelable{
+public class Quote implements Parcelable {
     String strQuote;
     Double rating = 0d;
     Date creationDate;
@@ -18,7 +18,6 @@ public class Quote implements Parcelable{
         rating = in.readDouble();
         creationDate = (Date) in.readSerializable();
     }
-
 
     /* Getters && Setters */
 

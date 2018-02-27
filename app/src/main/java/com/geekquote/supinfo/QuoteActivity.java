@@ -49,8 +49,8 @@ public class QuoteActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuoteActivity.this, QuoteListActivity.class);
-                startActivity(intent);
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
 
@@ -60,13 +60,10 @@ public class QuoteActivity extends AppCompatActivity {
                 // On déclenche une notification dès lors que l'utilisateur valide la modification
                 createNotification();
 
-                Intent intent = new Intent(QuoteActivity.this, QuoteListActivity.class);
-
-                if (quote != null) {
-                    quote.setRating((double) rtbQuote.getRating());
-                    intent.putExtra("Quote", quote);
-                }
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("Quote", quote);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -100,7 +97,7 @@ public class QuoteActivity extends AppCompatActivity {
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        // Nothing to do
+                        //DO nothing
                     }
                 });
 
@@ -112,12 +109,12 @@ public class QuoteActivity extends AppCompatActivity {
 
     private void createNotification() {
         Intent notificationIntent =
-                new Intent(QuoteActivity.this, QuoteListActivity.class);
+                new Intent(this, QuoteListActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(QuoteActivity.this, 0, notificationIntent, 0);
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         // Create Notification
-        Notification.Builder notiBuilder = new Notification.Builder(QuoteActivity.this);
+        Notification.Builder notiBuilder = new Notification.Builder(this);
         // Default ic from drawable resource, can be whatever you want
         notiBuilder.setSmallIcon(R.drawable.ic_launcher_background)
                 // Text when notification first occurs

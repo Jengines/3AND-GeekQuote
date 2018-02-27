@@ -2,6 +2,7 @@ package com.geekquote.supinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 public class QuoteListActivity extends AppCompatActivity {
-    private List<Quote> quoteList = new ArrayList<>();
+    private ArrayList<Quote> quoteList = new ArrayList<>();
     private String LOG = QuoteListActivity.this.getClass().getSimpleName();
     QuoteListAdapter quoteListAdapter;
 
@@ -78,6 +79,24 @@ public class QuoteListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("quotes", quoteList);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ArrayList<Quote> savedQuotes = (ArrayList<Quote>) savedInstanceState.getSerializable("quotes");
+
+        if (savedQuotes != null && savedQuotes.size() != 0) {
+            quoteList = savedQuotes;
+        }
+
     }
 
     private void addQuote(String strQuote) {

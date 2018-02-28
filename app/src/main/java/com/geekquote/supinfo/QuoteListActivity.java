@@ -10,16 +10,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.geekquote.supinfo.adapter.QuoteListAdapter;
+import com.geekquote.supinfo.helper.QuoteHelper;
 import com.geekquote.supinfo.model.Quote;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class QuoteListActivity extends AppCompatActivity {
-    private ArrayList<Quote> quoteList = new ArrayList<>();
+    private List<Quote> quoteList = new ArrayList<>();
     private String LOG = QuoteListActivity.this.getClass().getSimpleName();
     QuoteListAdapter quoteListAdapter;
     int quotePosition = -1;
+
+    QuoteHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +33,13 @@ public class QuoteListActivity extends AppCompatActivity {
 
         final EditText edtAddQuote = findViewById(R.id.edt_new_quote);
 
-        if (savedInstanceState != null && savedInstanceState.containsKey("quotes")) {
-            ArrayList<Quote> savedQuotes = savedInstanceState.getParcelableArrayList("quotes");
+        // Initialize QuoteHelper and retrieve all quotes from DB
+        helper = new QuoteHelper(this);
 
-            if (savedQuotes != null && savedQuotes.size() != 0) {
-                quoteList = savedQuotes;
-            }
+        try {
+            quoteList = helper.doQuery();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         // On initialise notre QuoteListAdapter qui va être associé à notre List de <Quote>
@@ -88,7 +94,9 @@ public class QuoteListActivity extends AppCompatActivity {
         if (requestCode == 2 && resultCode == RESULT_OK) {
             Quote quote = data.getParcelableExtra("Quote");
             if (quote != null) {
-                quoteList.set(quotePosition, quote);
+                Quote quoteUpdatedOrInserted = helper.doUpdate(quote);
+                quoteList.set(quotePosition, quoteUpdatedOrInserted);
+
                 quoteListAdapter.notifyDataSetChanged();
             }
         }
@@ -96,17 +104,12 @@ public class QuoteListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("quotes", quoteList);
-        super.onSaveInstanceState(outState);
-    }
-
     private void addQuote(String strQuote) {
         Quote quote = new Quote();
         quote.setStrQuote(strQuote);
         quote.setCreationDate(new Date());
 
-        quoteList.add(quote);
+        Quote quoteInserted = helper.doInsert(quote);
+        quoteList.add(quoteInserted);
     }
 }

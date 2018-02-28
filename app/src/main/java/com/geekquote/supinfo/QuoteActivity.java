@@ -60,6 +60,8 @@ public class QuoteActivity extends AppCompatActivity {
                 // On déclenche une notification dès lors que l'utilisateur valide la modification
                 createNotification();
 
+                // On met à jour le rating de la quote
+                quote.setRating((double) rtbQuote.getRating());
                 Intent intent = new Intent();
                 intent.putExtra("Quote", quote);
                 setResult(RESULT_OK, intent);

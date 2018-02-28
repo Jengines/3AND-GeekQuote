@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class Quote implements Parcelable {
+    int id = 0;
     String strQuote;
     Double rating = 0d;
     Date creationDate;
@@ -14,12 +15,21 @@ public class Quote implements Parcelable {
     }
 
     private Quote(Parcel in) {
+        id = in.readInt();
         strQuote = in.readString();
         rating = in.readDouble();
         creationDate = (Date) in.readSerializable();
     }
 
     /* Getters && Setters */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getStrQuote() {
         return strQuote;
@@ -58,6 +68,7 @@ public class Quote implements Parcelable {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
         out.writeString(strQuote);
         out.writeDouble(rating);
         out.writeSerializable(creationDate);
